@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # M.Tech Internship – Programming Tasks
 
 This project contains simple, internship-ready code for all 9 programming tasks, kept easy to understand and explain in viva examinations.
@@ -78,3 +79,6 @@ node JavaScript/groupWordsByFirstChar.js
 # Tasks 8 & 9
 # Open JavaScript/themeSwitcher/index.html and JavaScript/webComponent/index.html in any browser.
 ```
+=======
+# VIRTUSA-INTERNSHIP-TASKS
+>>>>>>> 6ebb23b68f2b1356ce88a40873c362ff2af1e857
