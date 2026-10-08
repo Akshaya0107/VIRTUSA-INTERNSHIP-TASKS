@@ -12,168 +12,74 @@ interface Employee {
     salary: number;
 }
 
-class EmployeeService {
+let emp: Employee[] = [];
 
-    private employees: Employee[] = [];
+function menu() {
+    console.log(`
+1.Add  2.View  3.Update  4.Delete  5.Exit`);
 
-    // CREATE
-    addEmployee(employee: Employee): void {
-        this.employees.push(employee);
-        console.log("\nEmployee added successfully!");
-    }
-
-    // READ
-    viewEmployees(): void {
-
-        if (this.employees.length === 0) {
-            console.log("\nNo employees found.");
-            return;
+    rl.question("Choice: ", c => {
+        if (c === "1") {
+            rl.question("ID: ", id =>
+            rl.question("Name: ", name =>
+            rl.question("Dept: ", department =>
+            rl.question("Salary: ", salary => {
+                emp.push({ id:+id, name, department, salary:+salary });
+                console.log("Added!");
+                menu();
+            }))));
         }
 
-        console.log("\nEmployee Records:");
-
-        this.employees.forEach((employee) => {
-            console.log("----------------------------");
-            console.log("ID:", employee.id);
-            console.log("Name:", employee.name);
-            console.log("Department:", employee.department);
-            console.log("Salary:", employee.salary);
-        });
-    }
-
-    // UPDATE
-    updateEmployee(id: number): void {
-
-        const employee = this.employees.find(
-            emp => emp.id === id
-        );
-
-        if (!employee) {
-            console.log("\nEmployee not found!");
-            return;
+        else if (c === "2") {
+            emp.length
+                ? emp.forEach(e => console.log(e))
+                : console.log("No employees!");
+            menu();
         }
 
-        rl.question("Enter new name: ", (name: string) => {
+        else if (c === "3") {
+            rl.question("ID: ", id => {
+                let e = emp.find(x => x.id === +id);
 
-            rl.question("Enter new department: ", (department: string) => {
+                if (!e) {
+                    console.log("Not found!");
+                    return menu();
+                }
 
-                rl.question("Enter new salary: ", (salaryInput: string) => {
-
-                    employee.name = name;
-                    employee.department = department;
-                    employee.salary = Number(salaryInput);
-
-                    console.log("\nEmployee updated successfully!");
-
+                rl.question("Name: ", n =>
+                rl.question("Dept: ", d =>
+                rl.question("Salary: ", s => {
+                    e.name = n;
+                    e.department = d;
+                    e.salary = +s;
+                    console.log("Updated!");
                     menu();
-                });
+                })));
             });
-        });
-    }
-
-    // DELETE
-    deleteEmployee(id: number): void {
-
-        const index = this.employees.findIndex(
-            emp => emp.id === id
-        );
-
-        if (index === -1) {
-            console.log("\nEmployee not found!");
-            return;
         }
 
-        this.employees.splice(index, 1);
+        else if (c === "4") {
+            rl.question("ID: ", id => {
+                let i = emp.findIndex(e => e.id === +id);
 
-        console.log("\nEmployee deleted successfully!");
-    }
-}
-
-
-const service = new EmployeeService();
-
-
-// MENU
-function menu(): void {
-
-    console.log("\n============================");
-    console.log("     EMPLOYEE CRUD SYSTEM");
-    console.log("============================");
-    console.log("1. Add Employee");
-    console.log("2. View Employees");
-    console.log("3. Update Employee");
-    console.log("4. Delete Employee");
-    console.log("5. Exit");
-    console.log("============================");
-
-    rl.question("Enter your choice: ", (choice: string) => {
-
-        switch (choice) {
-
-            case "1":
-                addEmployeeInput();
-                break;
-
-            case "2":
-                service.viewEmployees();
+                if (i < 0) console.log("Not found!");
+                else {
+                    emp.splice(i, 1);
+                    console.log("Deleted!");
+                }
                 menu();
-                break;
+            });
+        }
 
-            case "3":
-                rl.question("Enter employee ID to update: ", (id: string) => {
-                    service.updateEmployee(Number(id));
-                });
-                break;
+        else if (c === "5") {
+            rl.close();
+        }
 
-            case "4":
-                rl.question("Enter employee ID to delete: ", (id: string) => {
-
-                    service.deleteEmployee(Number(id));
-
-                    menu();
-                });
-                break;
-
-            case "5":
-                console.log("\nThank you!");
-                rl.close();
-                break;
-
-            default:
-                console.log("\nInvalid choice!");
-                menu();
+        else {
+            console.log("Invalid!");
+            menu();
         }
     });
 }
 
-
-// ADD EMPLOYEE INPUT
-function addEmployeeInput(): void {
-
-    rl.question("Enter employee ID: ", (id: string) => {
-
-        rl.question("Enter employee name: ", (name: string) => {
-
-            rl.question("Enter department: ", (department: string) => {
-
-                rl.question("Enter salary: ", (salary: string) => {
-
-                    const employee: Employee = {
-                        id: Number(id),
-                        name: name,
-                        department: department,
-                        salary: Number(salary)
-                    };
-
-                    service.addEmployee(employee);
-
-                    menu();
-                });
-            });
-        });
-    });
-}
-
-
-// Start program
 menu();
